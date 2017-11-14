@@ -115,11 +115,11 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
     x_ << 0, 0, 0, 0, 0;
 
     // init covariance matrix
-    P_ << 0.15,    0, 0, 0, 0,
-             0, 0.15, 0, 0, 0,
-             0,    0, 1, 0, 0,
-             0,    0, 0, 1, 0,
-             0,    0, 0, 0, 1;
+    P_ << 0.0225,      0, 0, 0, 0,
+               0, 0.0225, 0, 0, 0,
+               0,      0, 4, 0, 0,
+               0,      0, 0, 1, 0,
+               0,      0, 0, 0, 1;
 
     // init timestamp
     time_us_ = meas_package.timestamp_;
@@ -368,7 +368,7 @@ void UKF::UpdateLidar(MeasurementPackage meas_package) {
   VectorXd z_diff = z - z_pred;
 
   //calculate NIS
-  double NIS_laser_ = z_diff.transpose() * S.inverse() * z_diff;
+  //double NIS_laser_ = z_diff.transpose() * S.inverse() * z_diff;
 
   //update state mean and covariance matrix
   x_ = x_ + K * z_diff;
@@ -479,7 +479,8 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
   while (z_diff(1)<-M_PI) z_diff(1) += 2.*M_PI;
 
   //calculate NIS
-  double NIS_radar_ = z_diff.transpose() * S.inverse() * z_diff;
+  //double NIS_radar_ = z_diff.transpose() * S.inverse() * z_diff;
+  //cout << "NIS for Radar is " << NIS_radar_ << endl;
 
   //update state mean and covariance matrix
   x_ = x_ + K * z_diff;
